@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{personal.name}} - Student Profile</title>
+    <style>
+
+:root {
+            --primary-color: #4b79a1;
+            --secondary-color: #6b7280;
+            --background-color: #f4f7ff;
+            --text-color: #1f2937;
+            --border-color: #e5e7eb;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("../static/images/backend1.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            margin-top: 0px;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        #back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        #back:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-section {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            transition: transform 0.3s ease;
+        }
+
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .profile-header h3 {
+            color: #4b79a1;
+            font-size: 1.2rem;
+        }
+
+        details {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 20px;
+        }
+
+        .heading {
+      padding: 24px 40px;
+      color: white;
+    }
+
+    .heading-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .welcome h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .profile {
+      position: relative;
+    }
+    #buttonprof {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            size: 30px;
+        }
+
+        #menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-width: 200px;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 10;
+        }
+
+        #menu.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        #menu a {
+            display: block;
+            padding: 12px 16px;
+            color: #3c4043;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        #menu a:hover {
+            background-color: #f1f1f1;
+        }
+        summary {
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: #333;
+            padding: 10px 0;
+            transition: color 0.3s ease;
+        }
+
+        summary:hover {
+            color: #4b79a1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 15px;
+        }
+
+        table tr {
+            transition: background-color 0.3s ease;
+        }
+
+        table tr:hover {
+            background-color: rgba(75, 121, 161, 0.1);
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #333;
+        }
+
+        .button-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+        }
+
+        .button-17 {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background-color: #4b79a1;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button-17:hover {
+            background-color: #33658a;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .notes-section {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            resize: vertical;
+        }
+
+        .modal-trigger {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(74, 108, 247, 0.15);
+        }
+
+        .modal-trigger:hover {
+            background-color: #4b79a1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(74, 108, 247, 0.2);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(31, 41, 55, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal {
+            background-color: white;
+            width: 500px;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            max-width: 95%;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f3f4f6;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background-color: #e5e7eb;
+            transform: rotate(90deg);
+        }
+
+        .close-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--secondary-color);
+            stroke-width: 2;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-group textarea{
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background-color: #4b79a1;
+            transform: translateY(-2px);
+        }
+
+        .button-section{
+            margin-left: 40px;
+        }
+        .meetings-section {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="heading">
+        <div class="heading-content">
+          <div class="welcome">
+            <h1>Hello {{personal.name}} 👋</h1>
+          </div>
+          <div class="profile">
+            <button id="buttonprof" onclick="handleclick()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+              </svg>
+            </button>
+            <div id="menu">
+              <a>Karthika</a>
+              <a href="http://127.0.0.1:8000/log1">Log out</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="container">
+        <div class="profile-section">
+            <div class="profile-header">
+                <h1>{{personal.name}}</h1>
+                <h3>Department: {{personal.dept}}</h3>
+                <h3>Registration Number: {{personal.regno}}</h3>
+            </div>
+
+            <details id="personal">
+                <summary>Personal Information</summary>
+                <table>
+                    <tr><td>Name</td><td>{{personal.name}}</td></tr>
+                    <tr><td>Mobile</td><td>{{personal.mobile}}</td></tr>
+                    <tr><td>Email</td><td>{{personal.email}}</td></tr>
+                    <tr><td>Address</td><td>{{personal.add}}</td></tr>
+                    <tr><td>Gender</td><td>{{personal.g}}</td></tr>
+                    <tr><td>Blood Group</td><td>{{personal.bg}}</td></tr>
+                    <tr><td>Date of Birth</td><td>{{personal.dob}}</td></tr>
+                </table>
+            </details>
+
+            <details id="father">
+                <summary>Father's Details</summary>
+                <table>
+                    <tr><td>Name</td><td>{{father.na}}</td></tr>
+                    <tr><td>Email</td><td>{{father.em}}</td></tr>
+                    <tr><td>Mobile</td><td>{{father.mob}}</td></tr>
+                    <tr><td>Qualification</td><td>{{father.qua}}</td></tr>
+                    <tr><td>Occupation</td><td>{{father.occ}}</td></tr>
+                </table>
+            </details>
+
+            <details id="mother">
+                <summary>Mother's Details</summary>
+                <table>
+                    <tr><td>Name</td><td>{{mother.name}}</td></tr>
+                    <tr><td>Email</td><td>{{mother.email}}</td></tr>
+                    <tr><td>Qualification</td><td>{{mother.qua}}</td></tr>
+                    <tr><td>Occupation</td><td>{{mother.occ}}</td></tr>
+                </table>
+            </details>
+
+            <details id="academic">
+                <summary>Academic Performance</summary>
+                <table>
+                    <tr><td>12th Percentage</td><td>{{academic.high_s}}</td></tr>
+                    <tr><td>10th Percentage</td><td>{{academic.sec_s}}</td></tr>
+                </table>
+            </details>
+
+            <details id="ach">
+                <summary>Achievements</summary>
+                    <form action="http://127.0.0.1:8000/achieve/" method="POST">
+                        {% csrf_token %}
+                        <input type="number" value="{{personal.regno}}" name="regno" style="display:none;">
+                        <input type="text" value="{{personal.name}}" name="name" style="display:none;">
+                        <input type="text" value="{{personal.email}}" name="email" style="display:none;">
+                        
+                        <label for="achieve">Achievement</label>
+                        <textarea name="achieve" id="achieve-input"></textarea>
+                        
+                        <label for="issue">Issued By</label>
+                        <textarea name="issue" id="issue-input"></textarea>
+                        
+                        <button class="button-17">Submit Achievement</button>
+                    </form>
+            </details>
+
+            
+        </div>
+
+        <div class="notes-section">
+            <div class="button-section">
+                <div class="option" id="option">
+                    <button class="button-17" id="request" onclick="openModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
+                            <path d="M16 8c0 3.866-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7M5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                        </svg>
+                        Request Meeting
+                    </button>
+                </div>
+        <form action="http://127.0.0.1:8000/answer/">
+            <button class="button-17">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
+                    <path d="M16 8c0 3.866-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7M5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                </svg>
+                Answer Questions
+            </button>
+             <div class="modal-overlay">
+                <div class="modal">
+                    <button class="close-btn" onclick="closeModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+        
+                    <div class="modal-header">
+                        <h2>Request a Meeting</h2>
+                    </div>
+        
+                    <form action="{% url 'schedule' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="name">Meeting Context</label>
+                            <textarea name="subject" id="name"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Meeting Date</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="time">Meeting Time</label>
+                            <input type="time" id="time" name="time" required>
+                        </div>
+                        <button type="submit" class="submit-btn">Request a  Meeting</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meeting Schedule Modal (can be added here) -->
+    
+    <script>
+        function openModal() {
+            const overlay = document.querySelector('.modal-overlay');
+            overlay.classList.add('active');
+        }
+
+        function closeModal() {
+            const overlay = document.querySelector('.modal-overlay');
+            overlay.classList.remove('active');
+        }
+    </script>
+</body>
+</html>

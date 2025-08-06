@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>View Mentees Answers</title>
+        <style>
+            /* General Styles */
+            body {
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+                background: linear-gradient(to bottom, #f3f3f3, #e0e0e0);
+                background-image: url("../static/images/backend1.jpg");
+                background-size: cover;
+                background-repeat: no-repeat;
+            }
+
+            /* Header Section */
+            .header {
+                padding: 20px 40px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                color: black;
+                position: relative;
+            }
+
+            .header h1 {
+                margin: 0;
+                font-size: 30px;
+                width: 80%;
+                margin-left: 380px;
+            }
+
+            .header a {
+                text-decoration: none;
+                color: white;
+                font-size: 24px;
+                width: 20%;
+                transition: transform 0.3s ease;
+            }
+
+            .header a:hover {
+                transform: scale(1.1);
+            }
+
+            .select {
+                width: 30%;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease;
+                margin-bottom: 30px;
+                margin-top: 80px;
+                margin-left: 520px;
+            }
+
+            .select:hover {
+                transform: translateY(-5px);
+            }
+
+            .select h2 {
+                margin-bottom: 15px;
+                font-size: 20px;
+                color: #333;
+            }
+
+            .select input {
+                width: 100%;
+                padding: 12px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 16px;
+                box-sizing: border-box;
+            }
+
+            .select button {
+                background-color: #33658a; /* Hover Blue */
+                color: white;
+                border: none;
+                padding: 14px 25px;
+                border-radius: 24px;
+                width: 100%;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background-color 0.3s ease, transform 0.3s ease;
+            }
+
+            .select button:hover {
+                background-color: #2c4f6c; /* Darker Hover Blue */
+                transform: scale(1.05);
+            }
+
+            /* Results Section */
+            .result {
+                width: 65%;
+                background-color: #fff;
+                padding: 25px;
+                border-radius: 10px;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease;
+                margin-left: 240px;
+            }
+
+            .result h1 {
+                font-size: 26px;
+                color: #283e51; /* Dark Blue */
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .result h2 {
+                font-size: 22px;
+                color: #333;
+                margin-bottom: 15px;
+            }
+
+            .question {
+                background-color: #4b79a1; /* Light Blue */
+                color: white;
+                padding: 12px;
+                border-radius: 8px;
+                margin-bottom: 10px;
+                font-size: 18px;
+                box-sizing: border-box;
+            }
+
+            .answer {
+                color: #333;
+                padding: 12px;
+                border-radius: 8px;
+                font-size: 16px;
+                margin-bottom: 20px;
+                box-sizing: border-box;
+            }
+
+            select {
+                width: 100%;
+                padding: 14px;
+                border: 2px solid #ccc;
+                border-radius: 10px;
+                font-size: 16px;
+                margin: 16px 0;
+                transition: all 0.2s;
+                }
+
+                select[type="number"]:focus {
+                border-color: #4b79a1;
+                box-shadow: 0 0 8px rgba(75, 121, 161, 0.5);
+                outline: none;
+                }
+
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .two-section {
+                    flex-direction: column;
+                    padding: 15px;
+                }
+
+                .select, .result {
+                    width: 100%;
+                    margin-bottom: 20px;
+                }
+
+                .result h1, .result h2 {
+                    font-size: 20px;
+                }
+            }
+
+            @media (max-width: 500px) {
+                .header h1 {
+                    font-size: 24px;
+                }
+
+                .select input, .select button {
+                    font-size: 14px;
+                }
+
+                .result h1 {
+                    font-size: 18px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <a href="http://127.0.0.1:8000/mentor/">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16" id="back">
+                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                </svg>
+            </a>
+            <h1>View Answers</h1>
+        </div>
+        <div class="two-section">
+            <div class="select">
+                <form action="/ans" method="get">
+                    <select name="mentee" required>
+                        <option value="">Choose the mentee registration number</option>
+                        {% for i in dict.values %}
+                        <option value="{{ i.regno }}">{{ i.regno }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Get</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="result">
+            {% if resultlist %}
+            <h1>{{ registration }}</h1>
+            <h2>Answers</h2>
+            {% for question, answer in resultlist %}
+            <div class="question">Q) {{ question }}</div>
+            <div class="answer">A) {{ answer }}</div>
+            {% endfor %}
+            {% else %}
+            <h2>No result</h2>
+            {% endif %}
+        </div>
+    </body>
+</html>

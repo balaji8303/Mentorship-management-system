@@ -1,0 +1,232 @@
+<html>
+    <head>
+        <title>Post Answer</title>
+        <style>
+            body {
+                background-color: #f3f3f3; /* Light Gray */
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+
+            .header {
+                background-image: linear-gradient(#4b79a1, #283e51); /* Light Blue to Dark Blue */
+                text-align: center;
+                padding: 20px;
+                color: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+
+            .header h1 {
+                margin: 0;
+                font-size: 24px;
+            }
+
+            a {
+                position: absolute;
+                left: 20px;
+                top: 20px;
+                color: white;
+                text-decoration: none;
+            }
+
+            .answer-section {
+                margin: 30px auto;
+                max-width: 900px;
+                padding: 20px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .container .cont {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .container .cont label {
+                font-weight: bold;
+                margin-bottom: 10px;
+                color: #333;
+            }
+
+            textarea {
+                width: 100%;
+                height: 100px;
+                padding: 10px;
+                background-color: #ffffff;
+                border: 1px solid #333;
+                border-radius: 4px;
+                font-size: 14px;
+                resize: vertical;
+                box-sizing: border-box;
+                margin-bottom: 20px;
+            }
+
+            .button-17 {
+                background-color: #ffffff;
+                border-radius: 24px;
+                border: 1px solid #333; /* Dark Gray */
+                color: #333; /* Dark Gray */
+                font-family: "Google Sans", Roboto, Arial, sans-serif;
+                font-weight: 500;
+                padding: 10px 20px;
+                cursor: pointer;
+                width: 100%;
+                max-width: 200px;
+                margin: 20px auto;
+                transition: background-color 0.3s, color 0.3s;
+                display: inline-block;
+                text-align: center;
+                font-size: 14px;
+            }
+
+            .button-17:hover {
+                background: #F6F9FE; /* Light Blue */
+                color: #33658a; /* Medium Blue */
+            }
+
+            .button-17:active {
+                box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+            }
+
+            .answer-section h2 {
+                color: #333;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            /* Custom Popup Styles */
+            .popup {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                justify-content: center;
+                align-items: center;
+                z-index: 999;
+            }
+
+            .popup-content {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                text-align: center;
+                width: 300px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            .popup-content h2 {
+                margin: 0;
+                font-size: 20px;
+            }
+
+            .popup button {
+                background-color: #33658a;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-top: 20px;
+            }
+
+            .popup button:hover {
+                background-color: #4b79a1;
+            }
+
+            /* Mobile Responsiveness */
+            @media (max-width: 500px) {
+                .container {
+                    display: block;
+                    padding: 0 15px;
+                }
+
+                .container .cont {
+                    width: 100%;
+                }
+
+                .button-17 {
+                    width: 100%;
+                    max-width: none;
+                }
+
+                h1 {
+                    font-size: 20px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <a href="http://127.0.0.1:8000/mentee/">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16" id="back">
+                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                </svg>
+            </a>
+            <h1>Answer the Below Questions</h1>
+        </div>
+
+        <div class="answer-section">
+            {% if content %}
+                <h2>No Questions to Answer</h2>
+            {% else %}
+                <form action="http://127.0.0.1:8000/answer/" method="POST">
+                    {% csrf_token %}
+                    <div class="container">
+                        {% for question, number in list %}
+                            <div class="cont">
+                                <label for="{{ number }}">{{ number }}) {{ question }}</label>
+                                <textarea 
+                                    name="{{ number }}" 
+                                    placeholder="Enter the answer" 
+                                    {% if regno_answered %} disabled placeholder = "you've already responded" {% endif %}
+                                ></textarea>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button type="submit" class="button-17">Save</button>
+                </form>
+            {% endif %}
+        </div>
+
+        <!-- Popup Modal -->
+        <div class="popup" id="popup">
+            <div class="popup-content">
+                <h2>Successfully Submitted Your Answers!</h2>
+                <button onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+        <script>
+            var hasResponded = "{{ has_responded|escapejs }}"; // Assuming `has_responded` is passed from backend
+
+            // Display the popup if the user has already responded
+            if (hasResponded === "true") {
+                showPopup();
+            }
+
+            function showPopup() {
+                // Show the popup
+                document.getElementById('popup').style.display = 'flex';
+            }
+
+            function closePopup() {
+                // Close the popup
+                document.getElementById('popup').style.display = 'none';
+            }
+        </script>
+    </body>
+</html>

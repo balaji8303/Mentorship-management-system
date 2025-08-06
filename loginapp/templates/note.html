@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Notes App</title>
+    <style>
+        :root {
+            --primary-color: #4b79a1;
+            --secondary-color: #283e51;
+            --background-light: #f0f4f8;
+            --background-white: #ffffff;
+            --text-color: #2c3e50;
+            --delete-color: #ff4d4d;
+            --border-radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-color);
+            line-height: 1.6;
+            
+        }
+
+        .app-container {
+           
+            width: 100%;
+            margin: 0 auto;
+            min-height: 100vh;
+            overflow-y: hidden;
+            padding: 30px;
+            background-image: url("../static/images/backend1.jpg");
+            background-size: cover;
+            
+        }
+
+        a{
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            transition: transform 0.3s ease;
+            color: black;
+        }
+
+        a:hover{
+            transform: scale(1.1);
+        }
+        .container{
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            margin-top: 0px;
+            gap: 30px;
+        }
+
+        .notes-panel {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+            padding: 30px;
+            height: 590px;
+            display: flex;
+            flex-direction: column;
+            margin-top: 100px;
+            gap: 20px;
+        }
+
+        .notes-display {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+            padding: 30px;
+            height: 590px;
+            margin-top: 100px;
+        }
+
+        .app-title {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .app-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid transparent;
+            border-radius: 50px;
+            background-color: #f1f5f9;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .search-wrapper input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(75, 121, 161, 0.1);
+        }
+
+        .search-wrapper::before {
+            content: '🔍';
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            opacity: 0.5;
+        }
+
+        .note-input {
+            width: 100%;
+            min-height: 200px;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            font-size: 16px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .note-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(75, 121, 161, 0.1);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-voice {
+            background-color: #283e51;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-voice:hover {
+            background-color: #1a2b3c;
+        }
+
+        .notes-list {
+            max-height: 500px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-right: 10px;
+        }
+
+        .note-item {
+            background-color: #f1f5f9;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .note-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .note-text {
+            flex-grow: 1;
+            margin-right: 15px;
+            word-break: break-word;
+        }
+
+        .note-delete {
+            background-color: var(--delete-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .note-delete:hover {
+            background-color: #cc0000;
+        }
+
+        .voice-recording {
+            display: flex;
+            gap: 15px;
+        }
+
+        .search-highlight {
+            background-color: #f9e79f;
+            color: #333;
+            font-weight: bold;
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+        .hello{
+            background: linear-gradient(90deg, #4b79a1, #283e51);
+        }
+
+        @media (max-width: 1024px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                padding: 15px;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class = "hello">
+        
+    </div>
+   
+    <div class="app-container">
+        <div>
+            <a href="http://127.0.0.1:8000/detail"><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16" id = "back" >
+                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+              </svg></a>
+        </div>
+        <div class = "container">
+            <div class="notes-panel">
+                <h1 class="app-title">Notes</h1>
+                
+                <div class="search-wrapper">
+                    <input type="text" id="searchInput" placeholder="Search your notes..." onkeyup="searchNotes()">
+                </div>
+    
+                <form action="{% url 'addnote' %}" method="POST">
+                    {% csrf_token %}
+                    <textarea id="noteInput" class="note-input" name = "notes" placeholder="Write your thoughts here..."></textarea>
+                    <button type="submit" class="btn btn-primary">Add Note</button>
+                </form>
+                
+    
+                <div class="action-buttons">
+                    
+                </div>
+    
+                <div class="voice-recording">
+                    <button onclick="startRecording()" class="btn btn-voice">
+                        🎤 Start Recording
+                    </button>
+                    <button onclick="stopRecording()" class="btn btn-voice">
+                        🛑 Stop Recording
+                    </button>
+                </div>
+            </div>
+            <div class="notes-display">
+            
+                <div class="notes-list" id="notesList">
+                    {% if note %}
+                    {% for i in note %}
+                        
+                        <form action="{% url 'notes' %}" method = "POST">
+                            {% csrf_token %}
+                            <div class="note-item">
+                            <p>{{i}}</p>
+                            <input type="hidden" name="note_value" value="{{ i }}">
+                            <div>
+                                <button class = "note-delete">Delete</button>
+                            </div>
+                        </div>
+                            
+                        </form>
+                        
+                    
+                    
+                        
+                    {% endfor %}
+                {% endif %}
+                </div>
+            </div>
+
+        </div>
+        
+        
+
+        
+    </div>
+
+    <script>
+        // Existing voice recording variables
+        let mediaRecorder;
+        let audioChunks = [];
+        let notes = [
+            {% if note %}
+                {% for i in note %}
+                    "{{ i|escapejs }}"{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            {% else %}
+                // Fallback if `note` is empty
+            {% endif %}
+        ];
+
+
+
+        // Inverted Index Search Implementation
+        class NotesSearchIndex {
+            constructor() {
+                this.invertedIndex = {};
+                this.notes = [];
+                this.prefixIndex = {};
+            }
+
+            tokenize(note) {
+                return note.toLowerCase()
+                    .replace(/[^\w\s]/g, '')
+                    .split(/\s+/)
+                    .filter(word => word.length > 0);
+            }
+
+            addNote(note) {
+                const noteId = this.notes.length;
+                this.notes.push(note);
+
+                const tokens = this.tokenize(note);
+                tokens.forEach(token => {
+                    // Full word index
+                    if (!this.invertedIndex[token]) {
+                        this.invertedIndex[token] = new Set();
+                    }
+                    this.invertedIndex[token].add(noteId);
+
+                    // Prefix index for partial matching
+                    this.addPrefixIndexes(token, noteId);
+                });
+            }
+
+            addPrefixIndexes(word, noteId) {
+                for (let i = 1; i <= word.length; i++) {
+                    const prefix = word.slice(0, i);
+                    if (!this.prefixIndex[prefix]) {
+                        this.prefixIndex[prefix] = new Set();
+                    }
+                    this.prefixIndex[prefix].add(noteId);
+                }
+            }
+
+            search(query) {
+                if (!query) return this.notes;
+
+                const searchTokens = this.tokenize(query);
+                let matchingNoteIds = new Set();
+
+                searchTokens.forEach((token, index) => {
+                    // Exact and partial matches
+                    const exactMatches = this.invertedIndex[token] || new Set();
+                    const prefixMatches = this.findPartialMatches(token);
+
+                    const combinedMatches = new Set([...exactMatches, ...prefixMatches]);
+
+                    // First token sets the initial set
+                    if (index === 0) {
+                        matchingNoteIds = combinedMatches;
+                    } else {
+                        // Intersect with previous matches
+                        matchingNoteIds = new Set(
+                            [...matchingNoteIds].filter(id => combinedMatches.has(id))
+                        );
+                    }
+                });
+
+                return Array.from(matchingNoteIds).map(noteId => {
+                    const note = this.notes[noteId];
+                    return this.highlightSearchTerms(note, query);
+                });
+            }
+
+            findPartialMatches(token) {
+                const partialMatches = new Set();
+
+                // Check all words with the token as a substring
+                Object.keys(this.prefixIndex)
+                    .filter(prefix => prefix.includes(token))
+                    .forEach(prefix => {
+                        const matches = this.prefixIndex[prefix];
+                        matches.forEach(match => partialMatches.add(match));
+                    });
+
+                return partialMatches;
+            }
+
+            highlightSearchTerms(note, query) {
+                const searchTokens = this.tokenize(query);
+                let highlightedNote = note;
+
+                searchTokens.forEach(token => {
+                    const regex = new RegExp(`(${token})`, 'gi');
+                    highlightedNote = highlightedNote.replace(
+                        regex, 
+                        '<mark class="search-highlight">$1</mark>'
+                    );
+                });
+
+                return highlightedNote;
+            }
+        }
+        // Voice Recording Functions
+        async function startRecording() {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+
+            mediaRecorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                audioChunks = [];
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = document.createElement('audio');
+                audio.controls = true;
+                audio.src = audioUrl;
+                const audioContainer = document.createElement('div');
+                audioContainer.className = 'note-item';
+                audioContainer.appendChild(audio);
+                document.getElementById('notesList').appendChild(audioContainer);
+            };
+        }
+
+        function stopRecording() {
+            if (mediaRecorder) {
+                mediaRecorder.stop();
+            }
+        }
+
+        // Note Display and Search Functions
+        const searchIndex = new NotesSearchIndex();
+
+        function initializeNotesSearch() {
+            notes.forEach(note => searchIndex.addNote(note));
+        }
+
+        function searchNotes() {
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput.value;
+            const notesList = document.getElementById('notesList');
+            notesList.innerHTML = "";
+
+            const resultNotes = searchIndex.search(searchTerm);
+            displayNotes(resultNotes);
+        }
+
+        function displayNotes(filteredNotes) {
+            const notesList = document.getElementById('notesList');
+            filteredNotes.forEach(note => {
+                const noteItem = document.createElement('form');
+                noteItem.action = "{% url 'notes' %}";
+                noteItem.method = "POST";
+                noteItem.innerHTML = `
+                    {% csrf_token %}
+                    <div class="note-item">
+                        <p>${note}</p>
+                        
+                        <div>
+                            <button class="note-delete">Delete</button>
+                        </div>
+                    </div>
+                `;
+                notesList.appendChild(noteItem);
+            });
+        }
+
+        // Initialize search index when page loads
+        document.addEventListener('DOMContentLoaded', initializeNotesSearch);
+    </script>
+</body>
+</html>

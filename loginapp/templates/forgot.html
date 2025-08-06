@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  /* General Reset */
+
+  /* Login Box */
+  .login-box {
+      background: white;
+      padding: 30px;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 15px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      margin: 140px auto 0; /* Centering and spacing adjustments */
+      text-align: center;
+      margin-left: 550px;
+  }
+
+  .login-box svg {
+      color: #283e51;
+  }
+
+  .login-box .input-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 10px;
+  }
+
+  .login-box input {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      transition: all 0.3s;
+  }
+
+  .login-box input:focus {
+      border-color: #4b79a1;
+      box-shadow: 0 0 5px rgba(75, 121, 161, 0.3);
+  }
+
+  .login-box .button-17 {
+      margin-top: 20px;
+      align-items: center;
+      appearance: none;
+      background-color: #4b79a1;
+      border-radius: 24px;
+      border-style: none;
+      color: white;
+      cursor: pointer;
+      display: inline-flex;
+      font-size: 16px;
+      font-weight: 600;
+      height: 48px;
+      justify-content: center;
+      padding: 0 20px;
+      transition: transform 0.2s, background-color 0.3s;
+  }
+
+  .login-box .button-17:hover {
+      background-color: #33658a;
+      transform: scale(1.05);
+  }
+
+  .login-box .button-17:active {
+      transform: scale(0.98);
+  }
+
+  .login-box .forgot-password {
+      margin-top: 10px;
+      display: inline-block;
+      font-size: 14px;
+      color: #4b79a1;
+      text-decoration: none;
+      transition: color 0.3s;
+  }
+
+  .login-box .forgot-password:hover {
+      color: #33658a;
+      text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+      .login-box {
+          padding: 20px;
+          margin-top: 100px;
+      }
+
+      .login-box input {
+          font-size: 13px;
+          padding: 8px;
+      }
+
+      .login-box .button-17 {
+          font-size: 14px;
+          height: 42px;
+      }
+  }
+
+  @media (max-width: 500px) {
+      .login-box {
+          width: 90%;
+          margin-top: 80px;
+      }
+
+      .login-box input {
+          font-size: 12px;
+      }
+
+      .login-box .button-17 {
+          font-size: 12px;
+          height: 40px;
+      }
+  }
+</style>
+    <!-- Password Reset Section -->
+<div class="login-box">
+    <form action="{% url 'forgot_password' %}" method="post">
+        {% csrf_token %}
+        <input type="email" name="email" placeholder="Enter your email id" required><br><br>
+        <input type="password" name="newpass" placeholder="Enter your new password" required><br><br>
+        <input type="password" name="confirmpass" placeholder="Confirm your new password" required><br><br>
+        <button type="submit" class="button-17">Change</button>
+    </form>
+    <br>
+    <a href="{% url 'home' %}">Go Back</a>
+</div>
+
+
+<script>
+var data = JSON.parse("{{ forgotjs|escapejs }}");
+if (data) {
+    alert("An email has been sent to your registered email id for verification. Kindly verify and log in with your new credentials.");
+}
+</script>
+{% endblock %}
+
+
+

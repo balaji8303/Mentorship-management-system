@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Mentee Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url("../static/images/backend1.jpg");
+            background-size: cover;
+            color: #333;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            background: #fff;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid #333;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .header {
+            background-image: linear-gradient(#4b79a1, #283e51);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 20px;
+            color: black;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+        }
+
+        .section-header {
+            color: #4b79a1;
+            border-bottom: 2px solid #4b79a1;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #33658a;
+            box-shadow: 0 0 4px #33658a;
+        }
+
+        .submit-btn {
+            background-color: #4b79a1;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            grid-column: span 2;
+        }
+
+        .submit-btn:hover {
+            background-color: #33658a;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .submit-btn {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="http://127.0.0.1:8000/mentor" class="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+            </svg>
+        </a>
+        <h1>Add Mentee Details</h1>
+    </div>
+
+    <form action="http://127.0.0.1:8000/add/" method="POST" autocomplete="off" class="form-container">
+        {% csrf_token %}
+        
+        <div>
+            <h3 class="section-header">Personal Details</h3>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" name="name" placeholder="Enter the name of the student">
+            </div>
+            <div class="form-group">
+                <label for="regno">Registration Number</label>
+                <input type="text" name="regno" placeholder="Enter the registration number">
+            </div>
+            <div class="form-group">
+                <label for="mobile">Mobile</label>
+                <input type="text" name="mobile" id="stuph" placeholder="Enter mobile number">
+                <p id="phonemessage" class="error-message"></p>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="stuemail" placeholder="Enter student email">
+                <p id="emailerror" class="error-message"></p>
+            </div>
+            <div class="form-group">
+                <label for="add">Address</label>
+                <input type="text" name="add" placeholder="Enter address">
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select name="gender">
+                    <option value=""></option>
+                    <option value="F">F</option>
+                    <option value="M">M</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="bg">Blood Group</label>
+                <select name="bg">
+                    <option value=""></option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" name="dob">
+            </div>
+            <div class="form-group">
+                <label for="dept">Department</label>
+                <input type="text" name="dept" placeholder="Enter department">
+            </div>
+        </div>
+
+        <div>
+            <div>
+                <h3 class="section-header">Father's Details</h3>
+                <div class="form-group">
+                    <label for="fname">Name</label>
+                    <input type="text" name="fname" placeholder="Enter father's name">
+                </div>
+                <div class="form-group">
+                    <label for="fmail">Email</label>
+                    <input type="email" name="fmail" id="fmail" placeholder="Enter father's email">
+                    <p id="fathererror" class="error-message"></p>
+                </div>
+                <div class="form-group">
+                    <label for="fmob">Mobile</label>
+                    <input type="text" name="fmob" id="fmob" placeholder="Enter father's mobile">
+                    <p id="fatherph" class="error-message"></p>
+                </div>
+                <div class="form-group">
+                    <label for="fqua">Qualification</label>
+                    <input type="text" name="fqua" placeholder="Enter father's qualification">
+                </div>
+                <div class="form-group">
+                    <label for="focc">Occupation</label>
+                    <input type="text" name="focc" placeholder="Enter father's occupation">
+                </div>
+            </div>
+
+            <div>
+                <h3 class="section-header">Mother's Details</h3>
+                <div class="form-group">
+                    <label for="mname">Name</label>
+                    <input type="text" name="mname" placeholder="Enter mother's name">
+                </div>
+                <div class="form-group">
+                    <label for="mmail">Email</label>
+                    <input type="email" name="mmail" id="mmail" placeholder="Enter mother's email">
+                    <p id="merror" class="error-message"></p>
+                </div>
+                <div class="form-group">
+                    <label for="mmob">Mobile</label>
+                    <input type="text" name="mmob" id="mmob" placeholder="Enter mother's mobile">
+                    <p id="mph" class="error-message"></p>
+                </div>
+                <div class="form-group">
+                    <label for="mqua">Qualification</label>
+                    <input type="text" name="mqua" placeholder="Enter mother's qualification">
+                </div>
+                <div class="form-group">
+                    <label for="mocc">Occupation</label>
+                    <input type="text" name="mocc" placeholder="Enter mother's occupation">
+                </div>
+            </div>
+
+            <div>
+                <h3 class="section-header">Academic Details</h3>
+                <div class="form-group">
+                    <label for="perc1">10th Percentage</label>
+                    <input type="text" name="perc1" placeholder="Enter 10th percentage">
+                </div>
+                <div class="form-group">
+                    <label for="perc2">12th Percentage</label>
+                    <input type="text" name="perc2" placeholder="Enter 12th percentage">
+                </div>
+            </div>
+
+            
+        </div>
+        <button type="submit" class="submit-btn">Add Mentee</button>
+    </form>
+
+    <script>
+        // Existing validation script from the previous form (you can keep the same script)
+        var data = JSON.parse("{{resultjs|escapejs}}");
+        var successModal = document.getElementById("successModal");
+        var closeModal = document.getElementById("closeModal");
+
+        // Your existing JavaScript for form validation goes here
+        function checkphone(phonenumber){
+            return phonenumber.length === 10;
+        }
+
+        function checkemail(input){
+            var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z]+(?:\.[a-zA-Z-]+)*$/;
+            const firstChar = input.charAt(0);
+            return !isNaN(firstChar) ? false : input.match(validRegex);
+        }
+
+        // Additional event listeners for validation would be added here
+        var stuph = document.getElementById("stuph");
+          var errorMessage = document.getElementById("phonemessage");
+          stuph.addEventListener("input",function(){
+              var bool1 = checkphone(stuph.value)
+              if (!bool1){
+                  errorMessage.innerHTML = "Enter a valid phone number";
+              } else {
+                  errorMessage.innerHTML = "";
+              }
+          });
+
+          var input = document.getElementById("stuemail");
+          var emailerror = document.getElementById("emailerror");
+          input.addEventListener("input",function(){
+              var bool = checkemail(input.value)
+              if (!bool){
+                  emailerror.innerHTML = "Enter a valid email address";
+              } else {
+                  emailerror.innerHTML = "";
+              }
+          });
+
+          // Checking the father email and phone number
+          var father = document.getElementById("fmail");
+          var faerror = document.getElementById("fathererror");
+          father.addEventListener("input",function(){
+              var bool = checkemail(father.value)
+              if (!bool){
+                  faerror.innerHTML = "Enter a valid email address";
+              } else {
+                  faerror.innerHTML = "";
+              }
+          });
+
+          var fatherph = document.getElementById("fmob");
+          var error = document.getElementById("fatherph");
+          fatherph.addEventListener("input",function(){
+              var bool = checkphone(fatherph.value)
+              if (!bool){
+                  error.innerHTML = "Enter a valid phone number";
+              } else {
+                  error.innerHTML = "";
+              }
+          });
+    </script>
+</body>
+</html>
