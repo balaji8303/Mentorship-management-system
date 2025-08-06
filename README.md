@@ -51,7 +51,7 @@ A **robust, user-friendly web application** designed to streamline the mentorshi
 
 For inquiries or collaboration:
 
-- 📧 Email: your.email@example.com  
+- 📧 Email: balaji.m.great@gmail.com  
 - 🌐 GitHub: [github.com/balaji8303](https://github.com/balaji8303)
 
 ---
